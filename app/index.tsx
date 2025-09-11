@@ -1,7 +1,13 @@
-import { StatusBar, StyleSheet, Text, View } from "react-native";
-import { Link } from "expo-router";
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Container } from "lucide-react-native";
+import { Plus } from "lucide-react-native";
 import { useApp } from "@/contexts/AppContexts";
 
 export default function HomeScreen() {
@@ -19,12 +25,16 @@ export default function HomeScreen() {
       <SafeAreaView style={style.container}>
         {Array.isArray(persons) && persons.length == 0 ? (
           <View style={style.nullView}>
-            <Text style={{ fontSize: 24 }}>No Guests Yet</Text>
-            <Link style={style.nullButton} href={"/create"}>
-              <Text style={{ fontSize: 24, color: "white" }}>
-                Add new guests
-              </Text>
-            </Link>
+            <Text style={{ fontSize: 24 }}>No Guests Yet!</Text>
+            <TouchableOpacity
+              style={style.nullButton}
+              onPress={() => {
+                router.push("/create");
+              }}
+            >
+              <Plus color={"white"} />
+              <Text style={style.nullNew}>Add new</Text>
+            </TouchableOpacity>
           </View>
         ) : null}
       </SafeAreaView>
@@ -35,6 +45,7 @@ export default function HomeScreen() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff8f0",
   },
   nullView: {
     flex: 1,
@@ -46,5 +57,11 @@ const style = StyleSheet.create({
     backgroundColor: "#e44805ff",
     padding: 12,
     borderRadius: 999,
+    display: "flex",
+    flexDirection: "row",
+    gap: "6",
+    alignItems: "center",
+    justifyContent: "center",
   },
+  nullNew: { fontSize: 18, color: "white" },
 });
