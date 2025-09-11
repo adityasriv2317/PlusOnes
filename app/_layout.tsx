@@ -1,24 +1,41 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Tabs } from "expo-router";
+import React from "react";
+import { Home, Plus } from "lucide-react-native";
+import { AppContextProvider } from "@/contexts/AppContexts";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
+export default function TabLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <AppContextProvider>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: "#ff4d00",
+          headerStyle: {
+            backgroundColor: "#fde4da",
+          },
+          headerTitleAlign: "center",
+          animation: "fade",
+          tabBarStyle: {
+            backgroundColor: "#fde4da",
+            paddingTop: 4,
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Home",
+            tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
+          }}
+        />
+        <Tabs.Screen
+          name="create"
+          options={{
+            title: "Add",
+            headerTitle: "Add new guests",
+            tabBarIcon: ({ color, size }) => <Plus color={color} size={size} />,
+          }}
+        />
+      </Tabs>
+    </AppContextProvider>
   );
 }
