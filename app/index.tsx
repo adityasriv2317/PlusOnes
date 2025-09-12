@@ -1,19 +1,43 @@
 import { useApp } from "@/contexts/AppContexts";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import { Funnel, Plus } from "lucide-react-native";
+import { Funnel, Plus, Trash } from "lucide-react-native";
+import { useRef, useState } from "react";
 import {
+  Alert,
   FlatList,
   StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
+
+interface RenderBackdropProps extends BottomSheetBackdropProps {}
+
+const renderBackdrop = (props: RenderBackdropProps) => (
+  <BottomSheetBackdrop
+    {...props}
+    disappearsOnIndex={-1}
+    appearsOnIndex={0}
+    opacity={0.1}
+    pressBehavior="close"
+  />
+);
 
 export default function HomeScreen() {
-  const { persons, setPerson } = useApp();
+  const { persons, clearStorage, setPerson } = useApp();
+  const sheetRef = useRef<BottomSheet>(null);
+  const [filtered, setFiltered] = useState(false);
+  const [filteredPersons, setFilteredPersons] = useState<
+    { coming: string; name: string }[]
+  >([]);
 
   const nullView = (
     <View style={style.nullView}>
@@ -35,26 +59,144 @@ export default function HomeScreen() {
       {/* searchbar */}
       <View style={style.searchBar}>
         <TextInput placeholder="Search guests..." style={style.searchInput} />
-        <TouchableOpacity style={style.filterButton}>
+        <TouchableOpacity
+          onPress={() => {
+            sheetRef.current?.expand();
+          }}
+          style={style.filterButton}
+        >
           <Funnel color={"#fb8c00"} size={24} />
         </TouchableOpacity>
       </View>
 
       {/* content */}
       <FlatList
-        data={persons}
+        data={filtered ? filteredPersons : persons}
+        style={{ height: "100%" }}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={style.guests}>
-            <Text>{item.name}</Text>
+            <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+              {item.name}
+            </Text>
+            <Text style={{ fontSize: 18 }}>
+              Coming:{" "}
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color:
+                    item.coming === "No"
+                      ? "black"
+                      : item.coming === "Yes"
+                      ? "green"
+                      : "orange",
+                }}
+              >
+                {item.coming}
+              </Text>
+            </Text>
           </View>
         )}
       />
 
-      {Object.keys(persons).map((key) => (
-        <View key={key} style={style.guests}>
-          <Text key={key}>{persons[key].name}</Text>
-        </View>
-      ))}
+      <BottomSheet
+        enablePanDownToClose
+        ref={sheetRef}
+        index={-1}
+        enableBlurKeyboardOnGesture
+        backdropComponent={renderBackdrop}
+        snapPoints={["60%"]}
+        handleIndicatorStyle={{ backgroundColor: "#fb8c00" }}
+        backgroundStyle={{ backgroundColor: "#fbe0bf" }}
+      >
+        <BottomSheetView
+          style={{
+            flex: 1,
+            width: "100%",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Text style={{ fontSize: 24, fontWeight: "bold" }}>Filters</Text>
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              padding: 16,
+              gap: 16,
+              height: "100%",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={{ fontSize: 18 }}>Coming:</Text>
+              {filtered ? (
+                <TouchableOpacity
+                  style={{
+                    paddingVertical: 4,
+                    paddingHorizontal: 12,
+                    borderRadius: 22,
+                    backgroundColor: "rgba(255,255,255,0.5)",
+                  }}
+                  onPress={() => {
+                    setFiltered(false);
+                    setFilteredPersons(persons);
+                    sheetRef.current?.close();
+                  }}
+                >
+                  <Text style={{ fontSize: 18 }}>Clear</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+            {Object.values(["Yes", "No", "Maybe"]).map((status, i) => (
+              <TouchableOpacity
+                key={i}
+                style={{
+                  borderWidth: 2,
+                  borderColor: "#fb8c00",
+                  padding: 12,
+                  backgroundColor:
+                    filtered && filteredPersons[0].coming === status
+                      ? "#fb8c00"
+                      : "transparent",
+                  borderRadius: 999,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onPress={() => {
+                  setFiltered(true);
+                  setFilteredPersons(
+                    persons.filter(
+                      (person: { coming: string; name: string }) =>
+                        person.coming === status
+                    )
+                  );
+                  sheetRef.current?.close();
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color:
+                      filtered && filteredPersons[0].coming === status
+                        ? "white"
+                        : "#fb7d00ff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {status}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
     </View>
   );
 
@@ -68,8 +210,32 @@ export default function HomeScreen() {
     >
       <StatusBar barStyle={"dark-content"} />
       <SafeAreaView style={style.container}>
-        <Text style={style.header}>Plus One's List</Text>
-        {Object.keys(persons).length == 0 ? nullView : guestList}
+        <View style={style.headerContainer}>
+          <Text style={style.header}>Plus One's List</Text>
+          {Object.keys(persons).length > 0 && (
+            <TouchableOpacity
+              style={style.filterButton}
+              onPress={() => {
+                Alert.alert("Clear Data", "Your list will be cleared.", [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      setFiltered(false);
+                      clearStorage();
+                    },
+                  },
+                ]);
+              }}
+            >
+              <Trash color={"red"} />
+            </TouchableOpacity>
+          )}
+        </View>
+        {Object.keys(persons).length == 0 && !filtered ? nullView : guestList}
       </SafeAreaView>
     </View>
   );
@@ -80,15 +246,24 @@ const style = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff8f0",
   },
-  header: {
+  headerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     position: "fixed",
+    justifyContent: "space-between",
     top: 16,
     left: 16,
+    paddingBottom: 8,
+    width: "90%",
+    // borderBottomWidth: 2,
+    // borderBottomColor: "#fb8c00ff",
+  },
+  header: {
     fontSize: 34,
     color: "#fb8c00",
     fontWeight: "bold",
     fontFamily: "System",
-    marginBottom: 16,
   },
   nullView: {
     flex: 1,
@@ -102,14 +277,12 @@ const style = StyleSheet.create({
     borderRadius: 999,
     display: "flex",
     flexDirection: "row",
-    gap: "6",
+    gap: 6,
     alignItems: "center",
     justifyContent: "center",
   },
   nullNew: { fontSize: 18, color: "white" },
-  listView: {
-    padding: 16,
-  },
+  listView: { padding: 16 },
   searchBar: {
     marginBottom: 12,
     display: "flex",
@@ -131,6 +304,7 @@ const style = StyleSheet.create({
     borderColor: "#ffa726",
     paddingHorizontal: 12,
     paddingVertical: 8,
+    fontSize: 18,
   },
   filterButton: {
     borderRadius: 999,
@@ -139,5 +313,10 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fb8c00",
   },
-  guests: {},
+  guests: {
+    backgroundColor: "#fee6bfff",
+    padding: 16,
+    borderRadius: 22,
+    marginBottom: 12,
+  },
 });

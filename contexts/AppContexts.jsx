@@ -4,11 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-  // const [persons, setPerson] = useState(async () => {
-  //   const jsonValue = await AsyncStorage.getItem("persons");
-  //   return jsonValue != null ? JSON.parse(jsonValue) : [];
-  // });
-
   const [persons, setPerson] = useState([]);
 
   useEffect(() => {
@@ -24,6 +19,15 @@ export const AppContextProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  async function clearStorage() {
+    try {
+      await AsyncStorage.removeItem("persons");
+      setPerson([]);
+    } catch (e) {
+      console.error("Failed to clear storage", e);
+    }
+  }
+
   async function addPerson(newPerson) {
     setPerson((prevPersons) => [...prevPersons, newPerson]);
     const jsonValue = JSON.stringify([...persons, newPerson]);
@@ -31,7 +35,7 @@ export const AppContextProvider = ({ children }) => {
   }
 
   return (
-    <AppContext.Provider value={{ persons, addPerson }}>
+    <AppContext.Provider value={{ persons, addPerson, clearStorage, setPerson }}>
       {children}
     </AppContext.Provider>
   );

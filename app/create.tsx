@@ -22,7 +22,7 @@ export default function AddScreen() {
   });
 
   const addGuest = async () => {
-    const api = "https://randomuser.me/api/";
+    const api = "https://randomuser.me/api/?results=1&nat=us";
     try {
       setLoading(true);
       const res = await axios.get(api);
@@ -62,7 +62,7 @@ export default function AddScreen() {
             }
           >
             <Picker.Item label="Yes" value="Yes" />
-            <Picker.Item label="No" value="NO" />
+            <Picker.Item label="No" value="No" />
             <Picker.Item label="Maybe" value="Maybe" />
           </Picker>
         </View>
@@ -70,7 +70,7 @@ export default function AddScreen() {
 
       <View style={{ gap: 12 }}>
         <TouchableOpacity
-          style={{ backgroundColor: "#8145efff", ...style.button }}
+          style={{ backgroundColor: "#8145efff", height: 54, ...style.button }}
           onPress={() => {
             addGuest();
           }}
