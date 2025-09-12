@@ -8,14 +8,11 @@ export default function TabLayout() {
     <AppContextProvider>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#ff4d00",
-          headerStyle: {
-            backgroundColor: "#fde4da",
-          },
-          headerTitleAlign: "center",
-          animation: "fade",
+          tabBarActiveTintColor: "#fb8c00",
+          headerShown: false,
+          animation: "shift",
           tabBarStyle: {
-            backgroundColor: "#fde4da",
+            backgroundColor: "#ffe4c2ff",
             paddingTop: 4,
           },
         }}
