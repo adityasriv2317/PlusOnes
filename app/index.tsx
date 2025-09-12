@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
+import filter from "lodash.filter";
 
 interface RenderBackdropProps extends BottomSheetBackdropProps {}
 
@@ -32,12 +33,28 @@ const renderBackdrop = (props: RenderBackdropProps) => (
 );
 
 export default function HomeScreen() {
-  const { persons, clearStorage, setPerson } = useApp();
+  const { persons, clearStorage } = useApp();
   const sheetRef = useRef<BottomSheet>(null);
   const [filtered, setFiltered] = useState(false);
   const [filteredPersons, setFilteredPersons] = useState<
     { coming: string; name: string }[]
   >([]);
+  const [currentFilter, setCurrentFilter] = useState<string | null>(null);
+
+  const filterList = (text: string) => {
+    const formattedQuery = text.toLowerCase();
+    const filteredData = filter(
+      persons,
+      (person: { name: string; coming: string }) =>
+        person.name.toLowerCase().includes(formattedQuery)
+    );
+    setFilteredPersons(filteredData);
+    if (text.length > 0) {
+      setFiltered(true);
+    } else {
+      setFiltered(false);
+    }
+  };
 
   const nullView = (
     <View style={style.nullView}>
@@ -58,7 +75,11 @@ export default function HomeScreen() {
     <View style={style.listView}>
       {/* searchbar */}
       <View style={style.searchBar}>
-        <TextInput placeholder="Search guests..." style={style.searchInput} />
+        <TextInput
+          onChangeText={(t) => filterList(t)}
+          placeholder="Search guests..."
+          style={style.searchInput}
+        />
         <TouchableOpacity
           onPress={() => {
             sheetRef.current?.expand();
@@ -147,6 +168,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setFiltered(false);
                     setFilteredPersons(persons);
+                    setCurrentFilter(null);
                     sheetRef.current?.close();
                   }}
                 >
@@ -162,8 +184,9 @@ export default function HomeScreen() {
                   borderColor: "#fb8c00",
                   padding: 12,
                   backgroundColor:
-                    filtered && filteredPersons[0].coming === status
-                      ? "#fb8c00"
+                    currentFilter === status
+                      ? // filteredPersons[0].coming === status
+                        "#fb8c00"
                       : "transparent",
                   borderRadius: 999,
                   alignItems: "center",
@@ -177,6 +200,7 @@ export default function HomeScreen() {
                         person.coming === status
                     )
                   );
+                  setCurrentFilter(status);
                   sheetRef.current?.close();
                 }}
               >
@@ -184,8 +208,9 @@ export default function HomeScreen() {
                   style={{
                     fontSize: 18,
                     color:
-                      filtered && filteredPersons[0].coming === status
-                        ? "white"
+                      currentFilter === status
+                        ? // filteredPersons[0].coming === status
+                          "white"
                         : "#fb7d00ff",
                     fontWeight: "bold",
                   }}
