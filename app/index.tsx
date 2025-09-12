@@ -4,8 +4,8 @@ import BottomSheet, {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import { Funnel, Plus, Trash } from "lucide-react-native";
-import { useRef, useState } from "react";
+import { Funnel, Plus, Trash, Trash2 } from "lucide-react-native";
+import { useMemo, useRef, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -33,28 +33,33 @@ const renderBackdrop = (props: RenderBackdropProps) => (
 );
 
 export default function HomeScreen() {
-  const { persons, clearStorage } = useApp();
+  const { persons, clearStorage, updateList } = useApp();
   const sheetRef = useRef<BottomSheet>(null);
   const [filtered, setFiltered] = useState(false);
-  const [filteredPersons, setFilteredPersons] = useState<
-    { coming: string; name: string }[]
-  >([]);
+  // const [filteredPersons, setFilteredPersons] = useState<
+  //   { coming: string; name: string }[]
+  // >([]);
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filterList = (text: string) => {
-    const formattedQuery = text.toLowerCase();
-    const filteredData = filter(
-      persons,
-      (person: { name: string; coming: string }) =>
-        person.name.toLowerCase().includes(formattedQuery)
-    );
-    setFilteredPersons(filteredData);
-    if (text.length > 0) {
-      setFiltered(true);
-    } else {
-      setFiltered(false);
+  const filteredPersons = useMemo(() => {
+    let res = persons;
+
+    if (currentFilter) {
+      res = res.filter(
+        (person: { name: string; coming: string }) =>
+          person.coming === currentFilter
+      );
     }
-  };
+
+    if (searchQuery) {
+      res = filter(res, (person: { name: string; coming: string }) => {
+        return person.name.toLowerCase().includes(searchQuery.toLowerCase());
+      });
+    }
+
+    return res;
+  }, [persons, currentFilter, searchQuery]);
 
   const nullView = (
     <View style={style.nullView}>
@@ -76,7 +81,7 @@ export default function HomeScreen() {
       {/* searchbar */}
       <View style={style.searchBar}>
         <TextInput
-          onChangeText={(t) => filterList(t)}
+          onChangeText={setSearchQuery}
           placeholder="Search guests..."
           style={style.searchInput}
         />
@@ -92,31 +97,46 @@ export default function HomeScreen() {
 
       {/* content */}
       <FlatList
-        data={filtered ? filteredPersons : persons}
-        style={{ height: "100%" }}
+        data={filteredPersons}
+        scrollEnabled={true}
+        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={style.guests}>
-            <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-              {item.name}
-            </Text>
-            <Text style={{ fontSize: 18 }}>
-              Coming:{" "}
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  color:
-                    item.coming === "No"
-                      ? "black"
-                      : item.coming === "Yes"
-                      ? "green"
-                      : "orange",
-                }}
-              >
-                {item.coming}
+            <View style={{ gap: 4 }}>
+              <Text style={{ fontSize: 24, fontWeight: "bold" }}>
+                {item.name}
               </Text>
-            </Text>
+              <Text style={{ fontSize: 18 }}>
+                Coming:{" "}
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color:
+                      item.coming === "No"
+                        ? "black"
+                        : item.coming === "Yes"
+                        ? "green"
+                        : "orange",
+                  }}
+                >
+                  {item.coming}
+                </Text>
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{ padding: 8 }}
+              onPress={() => {
+                updateList(
+                  persons.filter(
+                    (p: { name: string; coming: string }) => p !== item
+                  )
+                );
+              }}
+            >
+              <Trash2 color={"red"} />
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -167,7 +187,7 @@ export default function HomeScreen() {
                   }}
                   onPress={() => {
                     setFiltered(false);
-                    setFilteredPersons(persons);
+                    // setFilteredPersons(persons);
                     setCurrentFilter(null);
                     sheetRef.current?.close();
                   }}
@@ -194,12 +214,12 @@ export default function HomeScreen() {
                 }}
                 onPress={() => {
                   setFiltered(true);
-                  setFilteredPersons(
-                    persons.filter(
-                      (person: { coming: string; name: string }) =>
-                        person.coming === status
-                    )
-                  );
+                  // setFilteredPersons(
+                  //   persons.filter(
+                  //     (person: { coming: string; name: string }) =>
+                  //       person.coming === status
+                  //   )
+                  // );
                   setCurrentFilter(status);
                   sheetRef.current?.close();
                 }}
@@ -207,11 +227,7 @@ export default function HomeScreen() {
                 <Text
                   style={{
                     fontSize: 18,
-                    color:
-                      currentFilter === status
-                        ? // filteredPersons[0].coming === status
-                          "white"
-                        : "#fb7d00ff",
+                    color: currentFilter === status ? "white" : "#fb7d00ff",
                     fontWeight: "bold",
                   }}
                 >
@@ -234,10 +250,10 @@ export default function HomeScreen() {
       }}
     >
       <StatusBar barStyle={"dark-content"} />
-      <SafeAreaView style={style.container}>
+      <SafeAreaView style={style.container} edges={['top', 'left', 'right']}>
         <View style={style.headerContainer}>
           <Text style={style.header}>Plus One's List</Text>
-          {Object.keys(persons).length > 0 && (
+          {persons.length > 0 && (
             <TouchableOpacity
               style={style.filterButton}
               onPress={() => {
@@ -260,7 +276,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
           )}
         </View>
-        {Object.keys(persons).length == 0 && !filtered ? nullView : guestList}
+        {persons.length == 0 && !filtered ? nullView : guestList}
       </SafeAreaView>
     </View>
   );
@@ -269,7 +285,9 @@ export default function HomeScreen() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff8f0",
+     backgroundColor: "#fff8f0",
+   // backgroundColor: "red",
+  //  paddingBottom: 16,
   },
   headerContainer: {
     display: "flex",
@@ -279,7 +297,7 @@ const style = StyleSheet.create({
     justifyContent: "space-between",
     top: 16,
     left: 16,
-    paddingBottom: 8,
+    paddingBottom: 22,
     width: "90%",
     // borderBottomWidth: 2,
     // borderBottomColor: "#fb8c00ff",
@@ -307,7 +325,11 @@ const style = StyleSheet.create({
     justifyContent: "center",
   },
   nullNew: { fontSize: 18, color: "white" },
-  listView: { padding: 16 },
+  listView: {
+    flex: 1,
+    paddingHorizontal: 16,
+  //  backgroundColor: "blue",
+  },
   searchBar: {
     marginBottom: 12,
     display: "flex",
@@ -339,6 +361,10 @@ const style = StyleSheet.create({
     borderColor: "#fb8c00",
   },
   guests: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#fee6bfff",
     padding: 16,
     borderRadius: 22,

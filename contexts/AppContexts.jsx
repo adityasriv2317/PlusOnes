@@ -34,8 +34,16 @@ export const AppContextProvider = ({ children }) => {
     await AsyncStorage.setItem("persons", jsonValue);
   }
 
+  async function updateList(updatedList) {
+    setPerson(updatedList);
+    const jsonValue = JSON.stringify(updatedList);
+    await AsyncStorage.setItem("persons", jsonValue);
+  }
+
   return (
-    <AppContext.Provider value={{ persons, addPerson, clearStorage, setPerson }}>
+    <AppContext.Provider
+      value={{ persons, addPerson, clearStorage, setPerson, updateList }}
+    >
       {children}
     </AppContext.Provider>
   );
