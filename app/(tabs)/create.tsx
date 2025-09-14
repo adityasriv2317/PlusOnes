@@ -48,7 +48,7 @@ export default function AddScreen() {
         <TextInput
           style={style.input}
           placeholder="Enter guest's name"
-          placeholderTextColor="#ffcc99"
+          placeholderTextColor="#ff9122ff"
           value={guest.name}
           onChangeText={(text) => setData((prev) => ({ ...prev, name: text }))}
         />
@@ -60,6 +60,10 @@ export default function AddScreen() {
             onValueChange={(value) =>
               setData((prev) => ({ ...prev, coming: value }))
             }
+            style={{ color: "#e65100" }}
+            dropdownIconColor="#e65100"
+            mode="dropdown"
+            dropdownIconRippleColor={"#e2ad5c66"}
           >
             <Picker.Item label="Yes" value="Yes" />
             <Picker.Item label="No" value="No" />

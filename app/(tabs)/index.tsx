@@ -36,9 +36,6 @@ export default function HomeScreen() {
   const { persons, clearStorage, updateList } = useApp();
   const sheetRef = useRef<BottomSheet>(null);
   const [filtered, setFiltered] = useState(false);
-  // const [filteredPersons, setFilteredPersons] = useState<
-  //   { coming: string; name: string }[]
-  // >([]);
   const [currentFilter, setCurrentFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -140,6 +137,43 @@ export default function HomeScreen() {
           </View>
         )}
       />
+
+      <View
+        style={{
+          paddingVertical: 8,
+          paddingHorizontal: 16,
+          position: "absolute",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 12,
+          bottom: 12,
+          right: 8,
+          width: "auto",
+          backgroundColor: "#ffe2c0ff",
+          marginHorizontal: 8,
+          borderColor: "#fb8c00ff",
+          borderWidth: 1,
+          borderRadius: 16,
+        }}
+      >
+        <View
+          style={{
+            width: 12,
+            height: 12,
+            borderRadius: 999,
+            backgroundColor: "#52c620",
+          }}
+        />
+        <Text style={{ fontSize: 24, textAlign: "center", fontWeight: "bold" }}>
+          {
+            filteredPersons.filter(
+              (p: { name: string; coming: string }) => p.coming === "Yes"
+            ).length
+          }{" "}
+          / {filteredPersons.length}
+        </Text>
+      </View>
 
       <BottomSheet
         enablePanDownToClose
@@ -249,10 +283,12 @@ export default function HomeScreen() {
         height: "100%",
       }}
     >
+      {/* <HeartsReanimatedBackground /> */}
+
       <StatusBar barStyle={"dark-content"} />
-      <SafeAreaView style={style.container} edges={['top', 'left', 'right']}>
+      <SafeAreaView style={style.container} edges={["top", "left", "right"]}>
         <View style={style.headerContainer}>
-          <Text style={style.header}>Plus One's List</Text>
+          <Text style={style.header}>Plus One's</Text>
           {persons.length > 0 && (
             <TouchableOpacity
               style={style.filterButton}
@@ -285,9 +321,7 @@ export default function HomeScreen() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-     backgroundColor: "#fff8f0",
-   // backgroundColor: "red",
-  //  paddingBottom: 16,
+    backgroundColor: "#fff8f0",
   },
   headerContainer: {
     display: "flex",
@@ -299,14 +333,12 @@ const style = StyleSheet.create({
     left: 16,
     paddingBottom: 22,
     width: "90%",
-    // borderBottomWidth: 2,
-    // borderBottomColor: "#fb8c00ff",
   },
   header: {
     fontSize: 34,
     color: "#fb8c00",
     fontWeight: "bold",
-    fontFamily: "System",
+    fontFamily: "Lobster",
   },
   nullView: {
     flex: 1,
@@ -318,6 +350,7 @@ const style = StyleSheet.create({
     backgroundColor: "#fb8c00",
     padding: 12,
     borderRadius: 999,
+    fontFamily: "System",
     display: "flex",
     flexDirection: "row",
     gap: 6,
@@ -328,7 +361,7 @@ const style = StyleSheet.create({
   listView: {
     flex: 1,
     paddingHorizontal: 16,
-  //  backgroundColor: "blue",
+    //  backgroundColor: "blue",
   },
   searchBar: {
     marginBottom: 12,
@@ -352,6 +385,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     fontSize: 18,
+    color: "#e65100",
   },
   filterButton: {
     borderRadius: 999,

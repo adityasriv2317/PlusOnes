@@ -9,6 +9,7 @@ A simple React Native (Expo) mobile app for managing your wedding guest list. It
 ### Core Features
 
 1. **Guest List Management**
+
    - Add a guest with `Name` and `RSVP` status (Yes / No / Maybe)
    - View a complete list of added guests
    - Delete guests from the list
@@ -95,9 +96,15 @@ This API is used to fetch random user data (first and last name), which is then 
 ```bash
 ├── app/
 │   ├── _layout.tsx        # Outlines the basic structure for the app and setting up tab navigation
-│   ├── index.tsx        # The home screen of our app featuring the guest lists, stats, search and filer features and delete buttons
-│   ├── create.tsx        # This screen has the input section to add new gust to the list by entering their name and RSVP status and the feature to add a random guest using the API
-├── assets/images/        # This folder contains app and splash icon assets
+│   ├── welcome.tsx        # Welcome screen for app
+│   ├── (tabs)/        # Creates tab layout for the app
+│        ├── _layout.tsx        # Outlines the basic structure for the app and setting up tab navigation
+│        ├── index.tsx        # The home screen of our app featuring the guest lists, stats, search and filer features and delete buttons
+│        ├── create.tsx        # This screen has the input section to add new gust to the list by entering their name and RSVP status and the feature to add a random guest using the API
+├── assets
+│   └── fonts/        # This folder contains fonts for the app
+│   └── images/        # This folder contains app and splash icon assets
+│   └── HeartBG.jsx   # Animated Heart Background for welcome screen
 ├── contexts/
 │   └── AppContexts.jsx   # The context provider for the app to maintain the data all over the app
 ├── .gitignore                  # gitignore file

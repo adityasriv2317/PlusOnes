@@ -1,44 +1,57 @@
-import { Tabs } from "expo-router";
-import React from "react";
-import { Home, Plus } from "lucide-react-native";
-import { AppContextProvider } from "@/contexts/AppContexts";
+import { Slot, SplashScreen } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AppContextProvider } from "@/contexts/AppContexts";
+import React from "react";
+import { useEffect, useState } from "react";
+import { View, ActivityIndicator } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts } from "expo-font";
+import WelcomeScreen from "./welcome";
 
-export default function TabLayout() {
+SplashScreen.preventAutoHideAsync();
+export default function RootLayout() {
+  const [isWelcome, setIsWelcome] = useState<boolean | null>(null);
+  const [fontsLoaded, fontError] = useFonts({
+    Lobster: require("../assets/fonts/Lobster.ttf"),
+  });
+
+  useEffect(() => {
+    if (fontsLoaded || fontError) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, fontError]);
+
+  useEffect(() => {
+    async function check() {
+      const isShown = await AsyncStorage.getItem("isWelcome");
+      setIsWelcome(isShown !== "true");
+    }
+    check();
+  }, []);
+
+  useEffect(() => {
+    async function check() {
+      const isShown = await AsyncStorage.getItem("isWelcome");
+      setIsWelcome(isShown !== "true");
+    }
+    check();
+  }, []);
+
+  if ((!fontsLoaded && !fontError) || isWelcome === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#ff00f7ff" />
+      </View>
+    );
+  }
+
+  if (isWelcome) {
+    return <WelcomeScreen />;
+  }
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <AppContextProvider>
-        <Tabs
-          screenOptions={{
-            tabBarActiveTintColor: "#fb8c00",
-            headerShown: false,
-            animation: "shift",
-            tabBarStyle: {
-              backgroundColor: "#ffe4c2ff",
-              paddingTop: 4,
-            },
-          }}
-        >
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: "Home",
-              tabBarIcon: ({ color, size }) => (
-                <Home color={color} size={size} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="create"
-            options={{
-              title: "Add",
-              headerTitle: "Add new guests",
-              tabBarIcon: ({ color, size }) => (
-                <Plus color={color} size={size} />
-              ),
-            }}
-          />
-        </Tabs>
+        <Slot />
       </AppContextProvider>
     </GestureHandlerRootView>
   );
