@@ -79,11 +79,35 @@ In the output, you'll find options to open the app in a
 
 ## Screenshots
 
-| ![Screenshot 1](<img src="./assets/screenshots/ss (1).png" width="200" />) | ![Screenshot 2](<img src="./assets/screenshots/ss (2).png" width="200" />) | ![Screenshot 3](<img src="./assets/screenshots/ss (3).png" width="200" />) |
-| ![Screenshot 4](<img src="./assets/screenshots/ss (4).png" width="200" />) | ![Screenshot 5](<img src="./assets/screenshots/ss (5).png" width="200" />) | ![Screenshot 6](<img src="./assets/screenshots/ss (6).png" width="200" />) |
-| ![Screenshot 7](<img src="./assets/screenshots/ss (7).png" width="200" />) | ![Screenshot 8](<img src="./assets/screenshots/ss (8).png" width="200" />) | ![Screenshot 9](<img src="./assets/screenshots/ss (9).png" width="200" />) |
-| ![Screenshot 10](<img src="./assets/screenshots/ss (10).png" width="200" />) | ![Screenshot 11](<img src="./assets/screenshots/ss (11).png" width="200" />) | ![Screenshot 12](<img src="./assets/screenshots/ss (12).png" width="200" />) |
-| ![Screenshot 13](<img src="./assets/screenshots/ss (13).png" width="200" />) | ![Screenshot 14](<img src="./assets/screenshots/ss (14).png" width="200" />) |
+```html
+<table>
+  <tr>
+    <td><img src="./assets/screenshots/ss (1).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (2).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (3).png" width="200" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/screenshots/ss (4).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (5).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (6).png" width="200" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/screenshots/ss (7).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (8).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (9).png" width="200" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/screenshots/ss (10).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (11).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (12).png" width="200" /></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/screenshots/ss (13).png" width="200" /></td>
+    <td><img src="./assets/screenshots/ss (14).png" width="200" /></td>
+    <td></td>
+  </tr>
+</table>
+```
 
 ---
 
