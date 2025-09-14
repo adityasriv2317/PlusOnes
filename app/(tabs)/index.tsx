@@ -81,6 +81,7 @@ export default function HomeScreen() {
           onChangeText={setSearchQuery}
           placeholder="Search guests..."
           style={style.searchInput}
+          placeholderTextColor={"#ffcc80"}
         />
         <TouchableOpacity
           onPress={() => {
@@ -332,7 +333,7 @@ const style = StyleSheet.create({
     top: 16,
     left: 16,
     paddingBottom: 22,
-    width: "90%",
+    width: "95%",
   },
   header: {
     fontSize: 34,

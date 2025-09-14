@@ -57,7 +57,7 @@ export default function WelcomeScreen() {
       setStep((prev) => prev + 1);
     } else {
       AsyncStorage.setItem("isWelcome", "true");
-      router.replace("/(tabs)/index");
+      router.replace("/");
     }
   };
 
