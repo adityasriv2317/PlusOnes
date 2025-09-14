@@ -81,20 +81,20 @@ In the output, you'll find options to open the app in a
 
 > _(Include screenshots here if available – e.g., guest list, add guest, API guest, search/filter UI)_
 
-![Screenshot](./assets/screenshots/ss%20(1).png.png)
-![Screenshot](./assets/screenshots/ss%20(2).png.png)
-![Screenshot](./assets/screenshots/ss%20(3).png.png)
-![Screenshot](./assets/screenshots/ss%20(4).png.png)
-![Screenshot](./assets/screenshots/ss%20(5).png.png)
-![Screenshot](./assets/screenshots/ss%20(6).png.png)
-![Screenshot](./assets/screenshots/ss%20(7).png.png)
-![Screenshot](./assets/screenshots/ss%20(8).png.png)
-![Screenshot](./assets/screenshots/ss%20(9).png.png)
-![Screenshot](./assets/screenshots/ss%20(10).png.png)
-![Screenshot](./assets/screenshots/ss%20(11).png.png)
-![Screenshot](./assets/screenshots/ss%20(12).png.png)
-![Screenshot](./assets/screenshots/ss%20(13).png.png)
-![Screenshot](./assets/screenshots/ss%20(14).png.png)
+![Screenshot](./assets/screenshots/ss%20(1).png)
+![Screenshot](./assets/screenshots/ss%20(2).png)
+![Screenshot](./assets/screenshots/ss%20(3).png)
+![Screenshot](./assets/screenshots/ss%20(4).png)
+![Screenshot](./assets/screenshots/ss%20(5).png)
+![Screenshot](./assets/screenshots/ss%20(6).png)
+![Screenshot](./assets/screenshots/ss%20(7).png)
+![Screenshot](./assets/screenshots/ss%20(8).png)
+![Screenshot](./assets/screenshots/ss%20(9).png)
+![Screenshot](./assets/screenshots/ss%20(10).png)
+![Screenshot](./assets/screenshots/ss%20(11).png)
+![Screenshot](./assets/screenshots/ss%20(12).png)
+![Screenshot](./assets/screenshots/ss%20(13).png)
+![Screenshot](./assets/screenshots/ss%20(14).png)
 ---
 
 ## API Used
