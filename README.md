@@ -79,7 +79,6 @@ In the output, you'll find options to open the app in a
 
 ## Screenshots
 
-```html
 <table>
   <tr>
     <td><img src="./assets/screenshots/ss (1).png" width="200" /></td>
@@ -107,7 +106,6 @@ In the output, you'll find options to open the app in a
     <td></td>
   </tr>
 </table>
-```
 
 ---
 
