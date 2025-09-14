@@ -79,11 +79,11 @@ In the output, you'll find options to open the app in a
 
 ## Screenshots
 
-| ![Screenshot 1](./assets/screenshots/ss%20(1).png) | ![Screenshot 2](./assets/screenshots/ss%20(2).png) | ![Screenshot 3](./assets/screenshots/ss%20(3).png) |
-| ![Screenshot 4](./assets/screenshots/ss%20(4).png) | ![Screenshot 5](./assets/screenshots/ss%20(5).png) | ![Screenshot 6](./assets/screenshots/ss%20(6).png) |
-| ![Screenshot 7](./assets/screenshots/ss%20(7).png) | ![Screenshot 8](./assets/screenshots/ss%20(8).png) | ![Screenshot 9](./assets/screenshots/ss%20(9).png) |
-| ![Screenshot 10](./assets/screenshots/ss%20(10).png) | ![Screenshot 11](./assets/screenshots/ss%20(11).png) | ![Screenshot 12](./assets/screenshots/ss%20(12).png) |
-| ![Screenshot 13](./assets/screenshots/ss%20(13).png) | ![Screenshot 14](./assets/screenshots/ss%20(14).png) |                   
+| ![Screenshot 1](<img src="./assets/screenshots/ss (1).png" width="200" />) | ![Screenshot 2](<img src="./assets/screenshots/ss (2).png" width="200" />) | ![Screenshot 3](<img src="./assets/screenshots/ss (3).png" width="200" />) |
+| ![Screenshot 4](<img src="./assets/screenshots/ss (4).png" width="200" />) | ![Screenshot 5](<img src="./assets/screenshots/ss (5).png" width="200" />) | ![Screenshot 6](<img src="./assets/screenshots/ss (6).png" width="200" />) |
+| ![Screenshot 7](<img src="./assets/screenshots/ss (7).png" width="200" />) | ![Screenshot 8](<img src="./assets/screenshots/ss (8).png" width="200" />) | ![Screenshot 9](<img src="./assets/screenshots/ss (9).png" width="200" />) |
+| ![Screenshot 10](<img src="./assets/screenshots/ss (10).png" width="200" />) | ![Screenshot 11](<img src="./assets/screenshots/ss (11).png" width="200" />) | ![Screenshot 12](<img src="./assets/screenshots/ss (12).png" width="200" />) |
+| ![Screenshot 13](<img src="./assets/screenshots/ss (13).png" width="200" />) | ![Screenshot 14](<img src="./assets/screenshots/ss (14).png" width="200" />) |
 
 ---
 
